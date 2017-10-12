@@ -5,7 +5,7 @@ from flask import Response
 from flask import request
 from flask import render_template
 from twilio import twiml
-from twilio.rest import TwilioRestClient
+from twilio.rest import Client
 
 # Pull in configuration from system environment variables
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
@@ -14,7 +14,7 @@ TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
 
 # create an authenticated client that can make requests to Twilio for your
 # account.
-client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 # Create a Flask web app
 app = Flask(__name__)
@@ -29,7 +29,7 @@ def index():
 @app.route('/message', methods=['POST'])
 def message():
     # Send a text message to the number provided
-    message = client.sms.messages.create(to=request.form['to'],
+    message = client.messages.create(to=request.form['to'],
                                          from_=TWILIO_NUMBER,
                                          body='Have fun with your Twilio development!')
 
